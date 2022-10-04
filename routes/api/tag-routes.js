@@ -7,10 +7,10 @@ router.get('/', async (req, res) => {
   // find all tags
   // be sure to include its associated Product data
 try {
-  const tagsData = await Tag.findAll({
+  const tagData = await Tag.findAll({
     incldue: [{model: Product}],
   });
-  res.status(200).json(tagsData);
+  res.status(200).json(tagData);
 } catch (err) {
   res.status(500).json(err);
 }
@@ -20,16 +20,16 @@ router.get('/:id', async (req, res) => {
   // find a single tag by its `id`
   // be sure to include its associated Product data
 try {
-  const tagsData = await Tag.findByPk(req.params.id, {
+  const tagData = await Tag.findOne(req.params.id, {
     include: [{model: Product}],
   });
 
-  if (!tagsData) {
+  if (!tagData) {
     res.status(404).json({ message: 'No tags found with that id!' });
     return;
   }
 
-  res.status(200).json(tagsData);
+  res.status(200).json(tagData);
 } catch (err) {
   res.status(500).json(err);
 }
@@ -38,10 +38,10 @@ try {
 router.post('/', async (req, res) => {
   // create a new tag
 try {
-  const tagsData = await Tag.create({
-    tag_id: req.body.tag_id,
+  const tagData = await Tag.create({
+    tag_name: req.body.tag_name,
   });
-  res.status(200).json(tagsData);
+  res.status(200).json(tagData);
   } catch (err) {
     res.status(400).json(err);
 }
@@ -49,35 +49,35 @@ try {
 
 router.put('/:id', (req, res) => {
   // update a tag's name by its `id` value
-  Tag.update(req.body, {
+  Tag.update(req.body.tag_name, {
     where: {
       id: req.params.id,
     }
   });
 
-  if (!Tag) {
+  if (!tagData) {
     res.status(400).json({message: 'No tag found with this id'});
     return;
   }
-  res.status(200).json(Tag)
+  res.status(200).json(tagData)
   
 });
 
 router.delete('/:id', async (req, res) => {
   // delete on tag by its `id` value
   try {
-    const tagsData = await Tag.destroy({
+    const tagData = await Tag.destroy({
       where: {
         id: req.params.id,
       },
     });
 
-    if (!tagsData) {
+    if (!tagData) {
       res.status(404).json({ message: 'No tag found with that id!' });
       return;
     }
 
-    res.status(200).json(tagsData);
+    res.status(200).json(tagData);
   } catch (err) {
     res.status(500).json(err);
   }
